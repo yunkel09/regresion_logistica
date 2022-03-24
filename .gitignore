@@ -58,7 +58,7 @@ vignettes/*.pdf
 *.pptx
 *.html
 *.txt
-*.svg
+# *.svg
 *.css
 *.pdf
 *.csl
