@@ -1,36 +1,33 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# regresion_logistica
+# Regresion Logística <a href='https://img.shields.io/badge/Anaconda-%2344A833.svg?style=for-the-badge&logo=anaconda&logoColor=white'><img src='man/figures/anaconda.svg' align="right" height="49" /></a>
 
-<!-- badges: start -->
-<!-- badges: end -->
+</br>
 
-The goal of regresion_logistica is to …
+-   Implementar regresión logística en Python 3, utilizando el algoritmo
+    “descenso de gradiente”.
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+-   Se proporciona un conjunto de datos de entrenamiento llamado “wine”.
 
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
+-   Requerimientos
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/v1/examples>.
+    -   Un solo archivo .py que acepte como parametros la entrada la
+        ubicación de los datos de entrenamiento, la ubicación de los
+        datos de evaluación, alpha, numIterations y el umbral.
 
-You can also embed plots, for example:
+    -   Intenten encontrar el mejor modelo posible variando la taza de
+        aprendizaje, el número de iteraciones y el umbral de decision,
+        utilizando 10-fold cross-validation. Reporten esos tres valores,
+        la precision y el recall.
 
-![](README_files/figure-gfm/pressure-1.png)<!-- -->
+    -   Utilizando un alpha de 0.1, 1000 iteraciones y un umbral de 0.5,
+        utilizando 10-fold crossvalidation, reporten la precision y el
+        recall.
 
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub.
+-   Rúbrica
+
+    -   Correr codigo con los datos de entrenamiento y verificar los
+        resultados del punto 3.
+    -   Verificar resultados del punto 2
+    -   Sin calificar estilo de código.
