@@ -72,9 +72,7 @@ vignettes/*.pdf
 *.woff2
 *.ttf
 *.eot
-*.svg
 *.emf
-*.PNG
 *.lof
 *.lot
 *.toc
