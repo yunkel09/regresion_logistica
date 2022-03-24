@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Regresion Logística <a href='https://img.shields.io/badge/Anaconda-%2344A833.svg?style=for-the-badge&logo=anaconda&logoColor=white'><img src='man/figures/anaconda.svg' align="right" height="49" /></a>
+# Regresion Logística <a href='https://img.shields.io/badge/Anaconda-%2344A833.svg?style=for-the-badge&logo=anaconda&logoColor=white'><img src='man/figures/anaconda.svg' align="right" height="39" /></a>
 
 </br>
 
