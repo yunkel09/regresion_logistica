@@ -51,8 +51,8 @@
 Un modelo que nos prediga la calidad del vino en función de las
 variables proporcionadas. Nos interesa responder la siguiente pregunta:
 
-> ¿Las características químicas del vino influyen en su calidad (buena
-> frente a mala)?
+<span style="background-color: #FFFF00">**¿Las características químicas
+del vino influyen en su calidad (buena frente a mala)?**</span>
 
 2.  ¿Qué tipo de datos tenemos y como se ven estas instancias?
 

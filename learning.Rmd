@@ -1,0 +1,48 @@
+---
+title: "Untitled"
+author: "William Chavarría"
+date: '2022-03-27'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+pacman::p_load(reticulate, tidyverse)
+```
+
+```{python}
+import pandas as pd
+import numpy as np
+import random
+```
+
+
+
+```{r}
+os <- import("os")
+np <- import("numpy", convert = TRUE)
+pd <- import("pandas", convert = TRUE)
+rd <- import("random", convert = TRUE)
+bu <- import_builtins()
+```
+
+```{python}
+vinos = pd.read_csv("wine.csv")
+```
+
+Para usar con R los objetos creados en Python hay que utilizar el
+prefijo "py".
+
+```{python}
+split = 0.6            
+train_size = int(len(vinos) * split)
+lt1 = random.sample(range(0, len(vinos)), train_size)
+train = vinos.iloc[lt1]
+test = vinos.drop(lt1, inplace=False)
+```
+
