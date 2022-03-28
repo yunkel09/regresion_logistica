@@ -21,22 +21,15 @@ import numpy as np
 import random
 ```
 
-
-
-```{r}
-os <- import("os")
-np <- import("numpy", convert = TRUE)
-pd <- import("pandas", convert = TRUE)
-rd <- import("random", convert = TRUE)
-bu <- import_builtins()
-```
-
 ```{python}
 vinos = pd.read_csv("wine.csv")
 ```
 
 Para usar con R los objetos creados en Python hay que utilizar el
 prefijo "py".
+
+# Funciones
+
 
 ```{python}
 split = 0.6            
@@ -45,4 +38,36 @@ lt1 = random.sample(range(0, len(vinos)), train_size)
 train = vinos.iloc[lt1]
 test = vinos.drop(lt1, inplace=False)
 ```
+
+
+# Estructura
+
+# Función de pérdida
+
+# Optimización
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -15,10 +15,7 @@ import numpy as np
 import random
 
 
-
 # funciones
-
- 
 def train_test_split_pandas(dataset, split = 0.60):
     train_size = int(split * len(dataset))
     # crea un listado de valores random no repetidos
