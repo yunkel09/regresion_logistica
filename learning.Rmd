@@ -1,18 +1,46 @@
 ---
-title: "Untitled"
-author: "William Chavarría"
-date: '2022-03-27'
-output: html_document
+title: k-means
+subtitle: Ejercicio Obligatorio
+author:
+- name: William Chavarría
+  affiliation: Máxima Formación
+  email: wchavarria@tigo.com.gt
+date: '`r format(Sys.Date())`'
+output: 
+  bookdown::html_document2:
+    toc: true
+    toc_float: true
+    highlight: pygments
+    theme: spacelab
+    css: custom_cluster.css
+    fig_caption: true
+    df_print: paged
+bibliography: [paquetes_cluster.bib, cluster.bib]
+biblio-style: "apalike"
+link-citations: true
 editor_options: 
   chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo        = TRUE, 
+                      include     = TRUE,
+                      cache       = TRUE,
+                      fig.align   = 'center',
+                      message     = FALSE,
+                      warning     = FALSE, 
+                      comment     = NA, 
+                      highlight   = TRUE,
+                      strip.white = TRUE,
+                      dev         = "svglite",
+                      fig.width   = 8,
+                      fig.asp     = 0.618,
+                      fig.show    = "hold",
+                      fig.align   = "center")
 ```
 
 ```{r}
-pacman::p_load(reticulate, tidyverse)
+pacman::p_load(knitr, reticulate, tidyverse)
 ```
 
 ```{python}
@@ -30,7 +58,6 @@ prefijo "py".
 
 # Funciones
 
-
 ```{python}
 split = 0.6            
 train_size = int(len(vinos) * split)
@@ -39,21 +66,144 @@ train = vinos.iloc[lt1]
 test = vinos.drop(lt1, inplace=False)
 ```
 
-
 # Estructura
 
-# Función de pérdida
+# Función de costo
+
+La función de costo mide el error que hay entre el verdadero $Y$ y el
+$\hat{Y}$ predicho. Esta se encarga de obtener los mejores $w$ en
+términos del error.
+
+$$J(\theta) = \frac{1}{m}[\sum_{i = 1}^{m}-y^{(i)}log(h_{\theta}(x^{(i
+)})) + (1 - y^{(i)})log(1 - h_{\theta}(x^{(i)}))]$$
+
+Donde $m$ es el número de muestras
+
+Yo quiero saber que tanto se equivocó en la predicción antes del umbral.
 
 # Optimización
 
+El objetivo de la optimización es encontrar un buen $w$ que haga cero o
+lo más cercano posible a cero esta pérdida.
+
+## Derivadas
+
+La derivada de una función matemática es la razón o velocidad de cambio
+de una función en un determinado punto. Es decir, qué tan rápido se está
+produciendo una variación.
+
+Desde una perspectiva geométrica, <span style="background-color: 
+#FFFF00">**la derivada de una función es la pendiente de la recta
+tangente al punto donde se ubica x.**</span>
+
+Cabe recordar que, en general, la derivada es una función matemática que
+se define como la tasa de cambio de una variable respecto a otra. Es
+decir, en qué porcentaje aumenta o disminuye una variable cuando otra
+también se ha incrementado o disminuido.
+
+## Descenso de gradiente
+
+El descenso de gradiente (GD) es un algoritmo iterativo de optimización
+de primer orden que se utiliza para encontrar un mínimo/máximo local de
+una función dada. Este método se usa comúnmente en aprendizaje
+automático (ML) y aprendizaje profundo (DL) para minimizar una función
+de costo/pérdida (por ejemplo, en una regresión lineal).
+
+Imagina que te colocan en cualquier punto cualquiera (aleatorio) de un
+terreno con valles y picos y que tu misión es llegar a la zona más
+baja de toda esta superficie, sin embargo, tu no tienes acceso al
+mapa del terreno y ni siquiera puedes observar al rededor, ya que vas
+con los ojos cerrados.
+
+En esta situación lo único que podrías hacer sería ir tanteando con el
+pie la inclinación del sitio en el que te encuentras, y tendría lógica
+que si queremos descender al punto mínimo pues nos movamos en la
+dirección hacia donde la pendiente descienda con mayor intensidad.
+
+Por tanto, primero evaluamos la inclinación, localizando la mayor
+pendiente en la posición actual, luego caminamos una distancia en esa
+dirección y después nos paramos.  En la nueva posición, volvemos a
+repetir el proceso, evaluamos la pendiente, detectamos la dirección y
+avanzamos, y así iteratívamente.
+
+### Matemáticamente
+
+Imagina que esto que ves aquí es nuestra función de costo. Se trata de
+una superficie tridimensional, donde los ejes $x$ y $z$ son los dos
+parámetros y la $Y$ es el error de nuestro modelo.
 
 
+(ref:gr-01) Resumen gráfico
+
+```{r, gr-01, echo=FALSE, fig.cap='(ref:gr-01)'}
+include_graphics("./figures/gd.png")
+```
+
+<br/>
+
+En el gráfico \@ref(fig:gr-01) se observa que estamos ubicados en el
+punto aleatorio seleccionados, queremos descender y no conocemos el
+terreno, pero si podemos evaluar la pendiente en la posición en la que
+estamos. Como hemos visto, esto equivale a calcular la derivada de la
+función en dicho punto.
+
+Como nuestra función es multidimensional, tendremos que calcular
+derivadas parciales para cada uno de nuestros parámetros, y cada uno
+de estos valores nos dirá cual es la pendiente en el eje de dicho
+parámetro.
+
+Conjuntamente todas estas direcciones, es decir, todas las derivadas
+parciales conforman un vector que nos indica la dirección hacia la que
+la pendiente asciende. Este vector se denomina el **gradiente**.
+
+Lo que queremos hacer es descender, así que lo que podemos hacer es
+utilizar este vector para tomar el sentido opuesto.
+
+(ref:gr-02) Resumen gráfico
+
+```{r, gr-02, echo=FALSE, fig.cap='(ref:gr-02)'}
+include_graphics("./figures/gd2.png")
+```
+
+<br/>
+
+En el gráfico \@ref(fig:gr-02) vemos las derivadas parciales para cada
+parámetro.
+
+Es decir, si el gradiente nos indica como tendríamos que actualizar
+nuestros parámetros para subir, lo que haremos entonces será restarlo.
+
+$$\theta :=\theta - \nabla f$$
+
+Por tanto, esto nos llevaría a un nuevo lugar de nuestra función, donde
+repetiríamos el proceso múltiples veces hasta llegar a una zona donde
+movernos ya no suponga una variación notable del costo.  Es decir, la
+pendiente es próxima a nula y lo más probable es que estemos en un
+**mínimo local**. Hemos por tanto minimizado el coste del modelo.
+
+Para que el algoritmo de la ecuación anterior esté completo, aun nos
+falta agregar un parámetro más: el **ratio de aprendizaje**.
 
 
+$$\theta :=\theta - \alpha \nabla f$$
 
+El **ratio de aprendizaje** lo que hace es definir cuanto afecta el
+gradiente a la actualización de nuestros parámetros en cada iteración,
+o lo que es lo mismo, cuanto avanzamos en cada paso. Esto es muy
+importante porque va a definir completamente el comportamiento de
+nuestro algoritmo.
 
+Hay diferentes técnicas que sirven para ajustar este parámetro de forma
+dinámica:
 
+- SGD (Stocastic Gradient Descent)
+- Momentum
+- NAG
+- Adagrad
+- Adadelta
+- Rmsprop
 
+### Regresión logística
 
 
 
