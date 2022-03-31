@@ -1,9 +1,9 @@
 
 
 import numpy as np
+import pandas as pd
 from numpy import log,dot,exp,shape
-import matplotlib.pyplot as plt
-from sklearn.datasets import make_classification
+# from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split  
 
 X,y = make_classification(n_features=4)
@@ -12,15 +12,13 @@ vinos = pd.read_csv("wine.csv")
 
 dummy = pd.get_dummies(vinos.quality, drop_first = True)
 vinos_d = pd.concat((vinos, dummy), axis = 1)
-vinos_d = vinos_d >> \
- select(-_.quality) >> \
- rename(quality = "Good")
+vinos_d.drop(['quality'], axis = 1, inplace=True)
+vinos_d.rename(columns = {"Good": "quality"}, inplace=True)
+
+
 
 y = vinos_d.quality.to_numpy()
-X = vinos_d >> \
- select(-_.quality)
-X = X.to_numpy()
-
+X = vinos_d.loc[:, vinos_d.columns != "quality"].to_numpy()
 
 X_tr,X_te,y_tr,y_te = train_test_split(X,y,test_size=0.3)
 
